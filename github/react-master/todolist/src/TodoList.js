@@ -1,5 +1,6 @@
 import React, { Component, Fragment } from 'react';
 //Fragment 是占位符 可以用来占位而不显示在页面元素上的
+import './style.css'
 
 class TodoList extends Component {
     // 一个类就肯定有一个constructor的构造函数，这是最优先执行的函数
@@ -19,8 +20,11 @@ class TodoList extends Component {
                 <div>
                     {/*在jsx语法中,变量要用括号包裹起来，绑定事件，要大写例如：onChang  */}
                     {/*在绑定事件时候记得用bind来调整作用域  */}
-                    <input 
+                    <label htmlFor="insetHtml">请输入内容</label>
+                    <input
+                        id="insetHtml" 
                         type="text" 
+                        className="input"
                         value={this.state.inputValue} 
                         onChange={this.handleInputChange.bind(this)}
                         placeholder={this.state.inputhloder}
@@ -35,7 +39,11 @@ class TodoList extends Component {
                             return <li 
                             key={index}
                             onClick={this.handelItemDelete.bind(this, index)}
-                            >{item}</li>
+                            dangerouslySetInnerHTML={{__html: item}}
+                            >
+                            {/*dangerouslySetInnerHTML={{__html: item}}这句话就是编译input标签里面一些特殊的符号或标签的，花括号里面是js表达式  */}
+                            {/* {item} */}
+                            </li>
                         })
                     }
                 </ul>
