@@ -1,6 +1,7 @@
 import React, { Component, Fragment } from 'react';
 //Fragment 是占位符 可以用来占位而不显示在页面元素上的
-import './style.css'
+import './style.css';
+import TodoItem from './TodoItem';
 
 class TodoList extends Component {
     // 一个类就肯定有一个constructor的构造函数，这是最优先执行的函数
@@ -22,10 +23,10 @@ class TodoList extends Component {
                     {/*在绑定事件时候记得用bind来调整作用域  */}
                     <label htmlFor="insetHtml">请输入内容</label>
                     <input
-                        id="insetHtml" 
-                        type="text" 
+                        id="insetHtml"
+                        type="text"
                         className="input"
-                        value={this.state.inputValue} 
+                        value={this.state.inputValue}
                         onChange={this.handleInputChange.bind(this)}
                         placeholder={this.state.inputhloder}
                     />&nbsp;&nbsp;&nbsp;
@@ -33,19 +34,29 @@ class TodoList extends Component {
                 </div>
                 <ul>
                     {/*用map做循环，写一个函数  ,接收2个参数 item内容  index对应的索引*/}
+                    {/*每一次循环都加上一个key值才不会报警告  */ }
                     {
                         this.state.list.map((item, index) => {
-                            {/*每一次循环都加上一个key值才不会报警告  */}
-                            return <li 
-                            key={index}
-                            onClick={this.handelItemDelete.bind(this, index)}
-                            dangerouslySetInnerHTML={{__html: item}}
-                            >
-                            {/*dangerouslySetInnerHTML={{__html: item}}这句话就是编译input标签里面一些特殊的符号或标签的，花括号里面是js表达式  */}
-                            {/* {item} */}
-                            </li>
+                            return (
+                            <div>
+                                <TodoItem 
+                                content={item}
+                                key={index}
+                                index={index}
+                                delteItem={this.handelItemDelete.bind(this)}
+                                />
+                                {/* <li 
+                                    key={index}
+                                    onClick={this.handelItemDelete.bind(this, index)}
+                                    dangerouslySetInnerHTML={{__html: item}}
+                                    >
+                                </li> */}
+                            </div>
+                            )
                         })
                     }
+                    {/*dangerouslySetInnerHTML={{__html: item}}这句话就是编译input标签里面一些特殊的符号或标签的，花括号里面是js表达式  */ }
+                    {/* {item} */ }
                 </ul>
             </Fragment>
         )
@@ -59,7 +70,7 @@ class TodoList extends Component {
         // 这样是没有效果的
         // this.state.inputValue = e.target.value;
         // console.log(this.state.inputValue)
-        
+
         // react给每个组件设置了一个方法 this.setstate({里面是你在上面绑定的数据，可以用这个方法改变})
         this.setState({
             inputValue: e.target.value
@@ -74,6 +85,7 @@ class TodoList extends Component {
             // 新增完后就清空input框里面的东西
             inputValue: ''
         })
+        console.log(this.state.list)
     }
 
     // 点击删除
