@@ -14,7 +14,12 @@ class TodoList extends Component {
             list: [],
             inputhloder: '请输入'
         }
+        // 一般要修改this指向的在这上面定义好先
+        this.handleInputChange = this.handleInputChange.bind(this)
+        this.handelBtnClick = this.handelBtnClick.bind(this)
+        this.handelItemDelete = this.handelItemDelete.bind(this)
     }
+
     render() {
         return (
             <Fragment>
@@ -27,10 +32,10 @@ class TodoList extends Component {
                         type="text"
                         className="input"
                         value={this.state.inputValue}
-                        onChange={this.handleInputChange.bind(this)}
+                        onChange={this.handleInputChange}
                         placeholder={this.state.inputhloder}
                     />&nbsp;&nbsp;&nbsp;
-                <button onClick={this.handelBtnClick.bind(this)}>提交</button>
+                <button onClick={this.handelBtnClick}>提交</button>
                 </div>
                 <ul>
                     {/*用map做循环，写一个函数  ,接收2个参数 item内容  index对应的索引*/}
@@ -43,7 +48,7 @@ class TodoList extends Component {
                                 content={item}
                                 key={index}
                                 index={index}
-                                delteItem={this.handelItemDelete.bind(this)}
+                                delteItem={this.handelItemDelete}
                                 />
                                 {/* <li 
                                     key={index}
@@ -61,8 +66,18 @@ class TodoList extends Component {
             </Fragment>
         )
     }
+
     // input框里面change的方法,接收event对象
     handleInputChange(e) {
+        // 必须要在外面声明
+        const value = e.target.value
+        this.setState(() => {
+            // 新版语法、返回一个对象
+            return {
+                inputValue: value
+            }
+        })
+
         // console.log(e.target.value)
         // 如果this.state.inputValue获取不到就打印看看这个this的指向,获取不到就可以使用es6的bind(this)来指向
         // console.log(this)
@@ -72,20 +87,28 @@ class TodoList extends Component {
         // console.log(this.state.inputValue)
 
         // react给每个组件设置了一个方法 this.setstate({里面是你在上面绑定的数据，可以用这个方法改变})
-        this.setState({
-            inputValue: e.target.value
-        });
+        // this.setState({
+        //     inputValue: e.target.value
+        // });
     }
 
     // 提交按钮点击事件
     handelBtnClick() {
-        this.setState({
-            // ...是es6的扩展符，这样就可以展开在数组里面所有的东西
-            list: [...this.state.list, this.state.inputValue],
-            // 新增完后就清空input框里面的东西
-            inputValue: ''
+        const list = [...this.state.list, this.state.inputValue]
+        const inputValue = ''
+        this.setState(() => {
+            return {
+                list: list,
+                inputValue: inputValue
+            }
         })
-        console.log(this.state.list)
+        // this.setState({
+        //     // ...是es6的扩展符，这样就可以展开在数组里面所有的东西
+        //     list: [...this.state.list, this.state.inputValue],
+        //     // 新增完后就清空input框里面的东西
+        //     inputValue: ''
+        // })
+        // console.log(this.state.list)
     }
 
     // 点击删除
@@ -99,8 +122,10 @@ class TodoList extends Component {
         // 拿到数组后就可以用splice来删除
         list.splice(index, 1);
         // 最后通过this.setstate({})来改变
-        this.setState({
-            list: list
+        this.setState(() => {
+            return {
+                list: list
+            }
         })
     }
 }
