@@ -43,20 +43,12 @@ class TodoList extends Component {
                     {
                         this.state.list.map((item, index) => {
                             return (
-                            <div>
                                 <TodoItem 
                                 content={item}
                                 key={index}
                                 index={index}
                                 delteItem={this.handelItemDelete}
                                 />
-                                {/* <li 
-                                    key={index}
-                                    onClick={this.handelItemDelete.bind(this, index)}
-                                    dangerouslySetInnerHTML={{__html: item}}
-                                    >
-                                </li> */}
-                            </div>
                             )
                         })
                     }
@@ -94,12 +86,13 @@ class TodoList extends Component {
 
     // 提交按钮点击事件
     handelBtnClick() {
-        const list = [...this.state.list, this.state.inputValue]
-        const inputValue = ''
-        this.setState(() => {
+        // const list = [...this.state.list, this.state.inputValue]
+        // const inputValue = ''
+        // setState可以接收一个参数prevState，这个是指修改之前的是怎样的  prevState等价于this.state
+        this.setState((prevState) => {
             return {
-                list: list,
-                inputValue: inputValue
+                list: [...prevState.list, prevState.inputValue],
+                inputValue: ''
             }
         })
         // this.setState({
