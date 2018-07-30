@@ -43,12 +43,19 @@ class TodoList extends Component {
                     {
                         this.state.list.map((item, index) => {
                             return (
+                            <div key={index}>
                                 <TodoItem 
                                 content={item}
-                                key={index}
                                 index={index}
                                 delteItem={this.handelItemDelete}
                                 />
+                                {/* <li 
+                                    key={index}
+                                    onClick={this.handelItemDelete.bind(this, index)}
+                                    dangerouslySetInnerHTML={{__html: item}}
+                                    >
+                                </li> */}
+                            </div>
                             )
                         })
                     }
@@ -108,13 +115,12 @@ class TodoList extends Component {
     handelItemDelete(index) {
         // 在绑定事件的时候传入他的index索引过来接收
         // console.log(index)
-
         // 定义一个常量来接收this.state.list里面的东西 immutable的概念，只是把this.state.list拷贝出来一份来操作
-        const list = [...this.state.list]
         // console.log(list)
         // 拿到数组后就可以用splice来删除
-        list.splice(index, 1);
         // 最后通过this.setstate({})来改变
+        const list = [...this.state.list]
+        list.splice(index, 1);
         this.setState(() => {
             return {
                 list: list
